@@ -1,0 +1,247 @@
+--Create table of Customer 
+CREATE TABLE CUSTOMER 
+(customer_ID INT, 
+customer_name VARCHAR2(10), 
+ customer_phone INT, 
+CONSTRAINT pk_CUTOMER PRIMARY KEY (customer_ID)); 
+ 
+-- Insert and Select table of Customer
+ insert into CUSTOMER values(123456,'Sameer',966555674321); 
+ insert into CUSTOMER values(567434,'Sara',966556168791);
+  insert into CUSTOMER values(242456,'Abdullah',96645717742);
+   insert into CUSTOMER values(224487,'Yara',966280595000); 
+   insert into CUSTOMER values(287900,'Jameela',9662390595390); 
+SELECT * FROM CUSTOMER; 
+ 
+ 
+-- Create table of Customer_address 
+CREATE TABLE CUSTOMER_address 
+(Customer_ID INT,
+ customer_country VARCHAR2(30),
+  customer_street VARCHAR2(50), 
+  customer_zip_code INT, 
+CONSTRAINT pk_CUSTOMER_address PRIMARY KEY (customer_country), 
+CONSTRAINT fk_CUSTOMER FOREIGN KEY (customer_ID) references CUSTOMER(customer_ID) ); 
+ 
+-- Insert and Select table of Customer_address 
+insert into CUSTOMER_address values(123456,'Jeddah Alsafa District','Om Alqura St','23576'); 
+insert into CUSTOMER_address values(567434,'Riyadh Jasmen District','T1 St','21675'); 
+insert into CUSTOMER_address values(242456,'Dubai Alwasel District','Sheikh Zayed Road','35415'); 
+insert into CUSTOMER_address values(224487,'Southampton','London Road','45367'); 
+insert into CUSTOMER_address values(287900,'Alkhober Alolaya District','Altahlia St','87652'); 
+SELECT * FROM CUSTOMER_address; 
+ 
+ 
+-- Create table of ordder 
+CREATE TABLE ordder  
+(ordder_ID INT NOT NULL PRIMARY KEY, 
+ Customer_ID INT, 
+ ordder_Date DATE,  
+ order_cost INT); 
+alter table ordder add FOREIGN KEY (customer_ID) references CUSTOMER(customer_ID); 
+  
+insert into ordder values(1,123456,date'2022-11-05',500); 
+ insert into ordder values(2,567434,date'2022-04-11',678); 
+  insert into ordder values(3,242456,date'2022-09-01',40);  
+  insert into ordder values(4,224487,date'2022-09-09',1599); 
+   insert into ordder values(5,287900,date'2021-12-29',340);  
+
+SELECT * FROM ordder;  
+ 
+ 
+-- Create table of orderLine  
+CREATE TABLE OrderLine 
+ (OrderNumberL INT NOT NULL, 
+  ordder_ID INT NOT NULL, 
+   order_type VARCHAR2(20),  
+CONSTRAINT pk_Orderline PRIMARY KEY (OrderNumberL), 
+CONSTRAINT fk_ordder_ID FOREIGN KEY (ordder_ID) REFERENCES ordder (ordder_ID)); 
+ 
+-- Insert and Select table of orderLine  
+insert into OrderLine values(11,1,'Care');
+ insert into OrderLine values(12,2,'Food');
+  insert into OrderLine values(13,3,'Food'); 
+  insert into OrderLine values(14,4,'Care'); 
+  insert into OrderLine values(15,5,'Care'); 
+SELECT * FROM OrderLine; 
+  
+  
+-- Create table of Food 
+CREATE TABLE Food_order 
+(Food_ID INT NOT NULL, 
+ ordder_ID INT NOT NULL,  
+Food_type VARCHAR2(20),  
+CONSTRAINT pk_Food_order PRIMARY KEY (Food_ID), 
+CONSTRAINT fk_ordder FOREIGN KEY (ordder_ID) REFERENCES ordder (ordder_ID)); 
+ 
+-- Insert and Select table of Food
+ insert into Food_order values(16,1,'Rice');
+  insert into Food_order values(17,2,'Fruites'); 
+  insert into Food_order values(18,3,'Vegatables');
+   insert into Food_order values(19,4,'milk'); 
+   insert into Food_order values(20,5,'Juice'); 
+Select * from Food_order; 
+ 
+ 
+-- Create table of Food 
+CREATE TABLE Food  
+(Food_type VARCHAR2(20),  
+Food_Price DECIMAL(6,2), 
+Food_ExpiryD Date, 
+CONSTRAINT pk_Food PRIMARY KEY (Food_type)); 
+ 
+-- Insert and Select table of Food 
+insert into Food values('Rice','4.30',date'2022-12-30'); 
+insert into Food values('Fruites','3.25',date'2022-11-15'); 
+insert into Food values('Vegatables','5.50',date'2022-12-05');
+ insert into Food values('milk','4.45',date'2022-11-30'); 
+ insert into Food values('Juice','2.15',date'2022-12-25'); 
+Select * from Food; 
+ 
+ 
+-- Create table of Care_order 
+CREATE TABLE Care_order 
+ (Care_ID INT NOT NULL, 
+  ordder_ID INT NOT NULL,  
+Care_type VARCHAR2(20),  
+CONSTRAINT pk_Care_order PRIMARY KEY (Care_ID), 
+CONSTRAINT fk_order FOREIGN KEY (ordder_ID) REFERENCES ordder (ordder_ID)); 
+ 
+-- Insert and Select table of Care_order 
+insert into Care_order values(21,1,'Face Mask'); 
+insert into Care_order values(22,2,'Cotton Pads');
+ insert into Care_order values(23,3,'Hand Cream'); 
+ insert into Care_order values(24,4,'Deodorant'); 
+ insert into Care_order values(25,5,'Hair Conditioner'); 
+Select * from Care_order; 
+ 
+ 
+-- Create table of Care 
+CREATE TABLE Care  
+(Care_type VARCHAR2(20),  
+Care_Price DECIMAL(6,2), 
+Care_ExpiryD DATE, 
+CONSTRAINT pk_Care PRIMARY KEY (Care_type)); 
+ 
+-- Insert and Select table of Care 
+insert into Care values('Face Mask','4.50',date'2022-12-30');
+ insert into Care values('Cotton Pads','2.30',date'2026-12-29');
+  insert into Care values('Hand Cream','5.80',date'2023-03-25'); 
+  insert into Care values('Deodorant','3.40',date'2023-07-15'); 
+  insert into Care values('Hair Conditioner','4.30',date'2023-05-28'); 
+Select * from Care; 
+ 
+ 
+-- Create Table of Supplier  
+CREATE TABLE SUPPLIER  
+(Supplier_ID INT NOT NULL,  
+ordder_ID INT NOT NULL,  
+SUPPLIER_name VARCHAR2(10), 
+SUPPLIER_Country VARCHAR2(30), 
+CONSTRAINT pk_supplier PRIMARY KEY (Supplier_ID), 
+CONSTRAINT fk_orderr FOREIGN KEY (ordder_ID) REFERENCES ordder (ordder_ID)); 
+ 
+-- Insert and Select Table of Supplier  
+insert into SUPPLIER values(123,1,'Mohammed','China'); 
+insert into SUPPLIER values(186,2,'Ali','United Emirates'); 
+insert into SUPPLIER values(546,3,'Jack','United Kingdom'); 
+insert into SUPPLIER values(763,4,'Rola','Egybt'); 
+insert into SUPPLIER values(836,5,'Noor','Kuwait'); 
+Select * from SUPPLIER; 
+ 
+ 
+-- Create table of Invoice  
+CREATE TABLE INVOICE
+ (Invoice_number INT NOT NULL, 
+  ordder_ID INT NOT NULL,  
+  INVOICE_Date DATE, 
+CONSTRAINT pk_invoice PRIMARY KEY (Invoice_number), 
+CONSTRAINT fk_ordderr FOREIGN KEY (ordder_ID) REFERENCES ordder (ordder_ID)); 
+ 
+-- Insert and Select table of Invoice  
+insert into INVOICE values(1,1,date'2022-11-05'); 
+insert into INVOICE values(2,2,date'2022-04-11'); 
+insert into INVOICE values(3,3,date'2022-09-01'); 
+insert into INVOICE values(4,4,date'2022-09-09'); 
+insert into INVOICE values(5,5,date'2022-12-29'); 
+Select * from INVOICE; 
+ 
+ 
+-- Create table of Delivery 
+CREATE TABLE Delivery 
+(Delivery_ID number(8),  
+INVOICE_number number(8), 
+Delivery_Date DATE, 
+CONSTRAINT pk_Delivery PRIMARY KEY (Delivery_ID), 
+CONSTRAINT fk_INVOICE FOREIGN KEY (INVOICE_number) REFERENCES INVOICE (INVOICE_number)); 
+ 
+-- Insert and Select table of Delivery 
+insert into Delivery values(60,1,date'2022-11-10'); 
+insert into Delivery values(61,2,date'2022-04-16'); 
+insert into Delivery values(62,3,date'2022-09-06'); 
+insert into Delivery values(63,4,date'2022-09-14'); 
+insert into Delivery values(64,5,date'2022-12-31'); 
+Select * from Delivery; 
+ 
+ 
+-- Create table of Employeee 
+CREATE TABLE Employeee 
+(Employeee_ID number(8),  
+Delivery_ID number(8), 
+CONSTRAINT pk_Employeee PRIMARY KEY (Employeee_ID), 
+CONSTRAINT fk_Delivery FOREIGN KEY (Delivery_ID) REFERENCES Delivery (Delivery_ID)); 
+ 
+-- Insert and Select table of Employee 
+insert into Employeee values(1122,60); 
+insert into Employeee values(1376,61); 
+insert into Employeee values(1788,62); 
+insert into Employeee values(1249,63); 
+insert into Employeee values(2941,64); 
+Select * from Employeee; 
+ 
+ 
+-- Create table of Employee_info 
+CREATE TABLE Employee_info 
+(Employeee_ID number(8),  
+Employee_name VARCHAR2(20), 
+Employee_phone number(10) , 
+CONSTRAINT pk_Employee_info PRIMARY KEY (Employeee_ID)); 
+ 
+-- Insert and 
+Select table of Employee_info 
+insert into Employee_info values(60,'Sara',0554476868); 
+insert into Employee_info values(61,'Khalid',0549156309); 
+insert into Employee_info values(62,'Waleed',0557784343); 
+insert into Employee_info values(63,'Reem',0565687322); 
+insert into Employee_info values(64,'Ahmed',0535354321); 
+Select * from Employee_info; 
+   
+ 
+----------------------------------------------------------------------- 
+-- Queries 
+ 
+-- Where 
+select customer_id,customer_phone from customer where customer_name = 'Sara'; 
+select ordder_id,customer_id from ordder where ordder_date = date'2022-04-11'; 
+ 
+-- Order by 
+select food_type,ordder_id from food_order order by food_id desc; 
+ 
+-- Group by 
+select count(customer_id) as customer ,customer_street from customer_address group by customer_street; 
+ 
+-- Aggregate functions 
+select AVG(order_cost) as Cost_Average from ordder; 
+select MIN(food_price) as Smallest_Price_Food from food; 
+ 
+-- Group by and Aggregate functions 
+select min(customer_id) as customer ,customer_street from customer_address group by customer_street; 
+select max (supplier_id) as supplier_id, supplier_country  from supplier group by supplier_country order by supplier_id; 
+ 
+-- Subquery 
+select ordder_date from ordder where ordder_id = any (select ordder_id from ordder where order_cost = 40); 
+ 
+--- Join 
+select ordder_ID,order_cost,customer_ID,customer_phone from customer natural JOIN ordder ; 
+select Delivery_date,invoice_number,employee_phone,employee_name from delivery natural join employee_info where employee_name = 'Sara'; 
+ 
